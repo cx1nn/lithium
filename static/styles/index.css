@@ -75,14 +75,16 @@ nav {
     color: var(--text-color);
     outline: none;
     width: 300px;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, width 0.4s ease;
     font-size: 1rem;
 }
 
 #form input:focus, #form input:hover {
     background-color: var(--input-hover-bg);
     box-shadow: 0 0 15px rgba(106, 130, 251, 0.5);
+    width: 900px;
 }
+
 
 #particles-js {
     position: fixed;
@@ -123,9 +125,14 @@ a, input {
 }
 
 /* Hover effects for interactive elements */
-.nav-links li:hover {
-    transform: scale(1.1);
+.nav-links li {
+    transition: transform 0.3s ease-in-out;
 }
+
+.nav-links li:hover {
+    transform: scale(1.5);
+}
+
 
 /* Subtle animations for title */
 @keyframes glow {
@@ -151,7 +158,7 @@ a, input {
     width: 100%;
     height: 100%;
     overflow: hidden;
-    z-index: 2;
+    z-index: -1;
   }
   
   #ambience video {
