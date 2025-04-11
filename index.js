@@ -1,57 +1,74 @@
-import express from 'express';
-import { createBareServer } from '@tomphttp/bare-server-node';
-import { fileURLToPath } from 'url';
-import { existsSync, readFileSync } from 'fs';
-import { createServer as httpServer, createServer as httpsServer } from 'http';
-import path from 'path';
-import chalk from 'chalk';
-import os from 'os';
+import express from "express";
+import { createServer } from "node:http";
+import { epoxyPath } from "@mercuryworkshop/epoxy-transport";
+import { libcurlPath } from "@mercuryworkshop/libcurl-transport";
+import { baremuxPath } from "@mercuryworkshop/bare-mux/node";
+import { join } from "node:path";
+import { hostname } from "node:os";
+import { server as wisp } from "@mercuryworkshop/wisp-js/server";
+;
 
+const __dirname = process.cwd();
 const app = express();
-const PORT = process.env.PORT || 8080;
-const bare = createBareServer('/bare/');
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const publicPath = join(__dirname, "static");
+app.use(express.static(publicPath));
+app.use("/epoxy/", express.static(epoxyPath));
+app.use("/libcurl/", express.static(libcurlPath));
+app.use("/baremux/", express.static(baremuxPath));
 
-app.use(express.static(path.join(__dirname, 'static')));
+const server = createServer();
 
-const pages = [
-    { route: '/~', file: 'apps.html' },
-    { route: '/1', file: 'tabs.html' },
-    { route: '/2', file: 'go.html' },
-    { route: '/3', file: 'index.html' },
-];
-
-pages.forEach(({ route, file }) =>
-    app.get(route, (_, res) => res.sendFile(path.join(__dirname, 'static', file)))
-);
+app.get("/", (req, res) => {
+    res.sendFile(join(publicPath, "index.html"));
+});
 
 app.use((req, res) => {
-    if (bare.shouldRoute(req)) bare.routeRequest(req, res);
-    else res.status(404).send('Not Found');
+    res.status(404);
+    res.sendFile(join(publicPath, "index.html"));
 });
 
-const server = existsSync(path.join(__dirname, 'key.pem')) && existsSync(path.join(__dirname, 'cert.pem'))
-    ? httpsServer({
-        key: readFileSync(path.join(__dirname, 'key.pem')),
-        cert: readFileSync(path.join(__dirname, 'cert.pem')),
-    }, app)
-    : httpServer(app);
-
-server.on('upgrade', (req, socket, head) => {
-    if (bare.shouldRoute(req, socket, head)) bare.routeUpgrade(req, socket, head);
-    else socket.end();
+server.on("request", (req, res) => {
+    
+    app(req, res);
 });
 
-server.listen(PORT, () => {
-    const addr = server.address();
-    const networkIP = Object.values(os.networkInterfaces()).flat().find(i => i.family === 'IPv4' && !i.internal)?.address || 'localhost';
+server.on("upgrade", (req, socket, head) => {
+    if (req.headers['upgrade'] !== 'websocket') {
+        socket.destroy();
+        return;
+    }
 
-    console.clear();
-    console.log(chalk.cyan('╔════════════════════════════════╗'));
-    console.log(chalk.bold.magenta('        🌟 Lithium Protection 🌟'));
-    console.log(chalk.cyan('╚════════════════════════════════╝'));
-    console.log(chalk.yellow(`Local:    http://localhost:${addr.port}`));
-    console.log(chalk.yellow(`Network:  http://${networkIP}:${addr.port}`));
-    console.log(chalk.cyan('══════════════════════════════════'));
+
+    wisp.routeRequest(req, socket, head);
+});
+
+let port = parseInt(process.env.PORT || "8080");
+
+if (isNaN(port)) port = 8080;
+
+server.on("listening", () => {
+    const address = server.address();
+
+    console.log("Lithium Protection Active");
+    console.log("Listening on:");
+    console.log(`\thttp://localhost:${address.port}`);
+    console.log(`\thttp://${hostname()}:${address.port}`);
+    console.log(
+        `\thttp://${address.family === "IPv6" ? `[${address.address}]` : address.address
+        }:${address.port}`
+    );
+});
+
+process.on("SIGINT", shutdown);
+process.on("SIGTERM", shutdown);
+
+function shutdown() {
+    console.log("SIGTERM signal received: closing HTTP server");
+    server.close();
+    process.exit(0);
+}
+
+server.listen({
+    port,
 });
