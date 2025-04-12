@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lithium Settings</title>
+    <link rel="stylesheet" href="./styles/index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        .settings-container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            --bg-gradient: linear-gradient(135deg, #141e30, #243b55);
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            position: relative;
+            z-index: 1;
+        }
+
+        .settings-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .settings-section:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .settings-title {
+            color: #fff;
+            font-size: 24px;
+            margin-bottom: 20px;
+            text-align: center;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        .setting-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .setting-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .setting-label {
+            color: #fff;
+            font-size: 16px;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+        }
+
+        .setting-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        select, button {
+            padding: 8px 15px;
+            border-radius: 5px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(0, 0, 0, 0.5);
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23FFFFFF%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.4-12.8z%22%2F%3E%3C%2Fsvg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.7em top 50%;
+            background-size: 0.65em auto;
+            padding-right: 30px;
+        }
+
+        select option {
+            background: rgba(0, 0, 0, 0.9);
+            color: #fff;
+            padding: 8px 15px;
+        }
+
+        select::-ms-expand {
+            display: none;
+        }
+
+        select:hover, button:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-1px);
+        }
+
+        .proxy-status {
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+        }
+
+        .status-uv {
+            background: rgba(0, 255, 0, 0.2);
+            color: #00ff00;
+            border: 1px solid rgba(0, 255, 0, 0.3);
+        }
+
+        .status-sj {
+            background: rgba(0, 0, 255, 0.2);
+            color: #00ffff;
+            border: 1px solid rgba(0, 0, 255, 0.3);
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 2;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+        }
+
+        .back-button:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .save-button {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin-top: 20px;
+            background: rgba(0, 255, 0, 0.2);
+            border: 1px solid rgba(0, 255, 0, 0.3);
+            border-radius: 5px;
+            color: #00ff00;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
+        }
+
+        .save-button:hover {
+            background: rgba(0, 255, 0, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .settings-icon {
+            margin-right: 10px;
+            color: #fff;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+        }
+
+        .setting-input {
+            padding: 8px 15px;
+            border-radius: 5px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(0, 0, 0, 0.5);
+            color: #fff;
+            width: 200px;
+            transition: all 0.3s ease;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+        }
+
+        .setting-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .setting-input:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .setting-input:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.5);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="floating"></div>
+    <div class="glow-border"></div>
+    <div class="secret-message">you found the skibidi toilet rizzler secret!!!!!!!</div>
+    <div class="rainbow-mode"></div>
+    <div class="matrix-rain"></div>
+    <div class="hidden-stars"></div>
+    <div class="ambience-particle"></div>
+    <div class="ambience-particle"></div>
+    <div class="ambience-particle"></div>
+
+    <button class="back-button" onclick="window.location.href='/'">
+        <i class="fas fa-arrow-left"></i> Back
+    </button>
+    
+    <div class="settings-container">
+        <h1 class="settings-title">Lithium Settings</h1>
+        
+        <div class="settings-section">
+            <h2><i class="fas fa-shield-alt settings-icon"></i>Proxy Settings</h2>
+            <div class="setting-item">
+                <span class="setting-label">Proxy Type</span>
+                <div class="setting-control">
+                    <select id="proxyType">
+                        <option value="uv" id="uvOption">Ultraviolet (UV)</option>
+                        <option value="sj" id="sjOption">Scramjet (SJ)</option>
+                    </select>
+                </div>
+            </div>
+            <div class="proxy-status" id="proxyStatus"></div>
+        </div>
+
+        <div class="settings-section">
+            <h2><i class="fas fa-network-wired settings-icon"></i>Transport Settings</h2>
+            <div class="setting-item">
+                <span class="setting-label">Transport Type</span>
+                <div class="setting-control">
+                    <select id="transportType">
+                        <option value="epoxy">Epoxy</option>
+                        <option value="libcurl">LibCURL</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="settings-section">
+            <h2><i class="fas fa-search settings-icon"></i>Search Settings</h2>
+            <div class="setting-item">
+                <span class="setting-label">Default Search Engine</span>
+                <div class="setting-control">
+                    <select id="searchEngine">
+                        <option value="google">Google</option>
+                        <option value="duckduckgo">DuckDuckGo</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="settings-section">
+            <h2><i class="fas fa-user-secret settings-icon"></i>Cloaking Settings</h2>
+            <div class="setting-item">
+                <span class="setting-label">Interface Disguise</span>
+                <div class="setting-control">
+                    <select id="cloakType">
+                        <option value="none">No Cloak</option>
+                        <option value="google-docs">Google Docs</option>
+                        <option value="google-classroom">Google Classroom</option>
+                        <option value="blackboard">Blackboard</option>
+                        <option value="moodle">Moodle</option>
+                        <option value="scholastic">Scholastic</option>
+                        <option value="khan-academy">Khan Academy</option>
+                        <option value="quizlet">Quizlet</option>
+                    </select>
+                </div>
+            </div>
+            <div class="setting-item">
+                <span class="setting-label">Custom Title</span>
+                <div class="setting-control">
+                    <input type="text" id="customTitle" placeholder="Enter custom title" class="setting-input">
+                </div>
+            </div>
+            <div class="setting-item">
+                <span class="setting-label">Custom Favicon</span>
+                <div class="setting-control">
+                    <input type="text" id="customFavicon" placeholder="Enter favicon URL" class="setting-input">
+                </div>
+            </div>
+        </div>
+
+        <button class="save-button" onclick="saveSettings()">
+            <i class="fas fa-save"></i> Save Settings
+        </button>
+    </div>
+
+    <script src="./js/particles.js"></script>
+    <script>
+        function loadSettings() {
+            const proxyType = localStorage.getItem("proxy") || "uv";
+            const transportType = localStorage.getItem("transport") || "epoxy";
+            const searchEngine = localStorage.getItem("engine") || "google";
+            const cloakType = localStorage.getItem("cloak") || "none";
+            const customTitle = localStorage.getItem("customTitle") || "";
+            const customFavicon = localStorage.getItem("customFavicon") || "";
+
+            document.getElementById("proxyType").value = proxyType;
+            document.getElementById("transportType").value = transportType;
+            document.getElementById("searchEngine").value = searchEngine;
+            document.getElementById("cloakType").value = cloakType;
+            document.getElementById("customTitle").value = customTitle;
+            document.getElementById("customFavicon").value = customFavicon;
+
+            updateProxyStatus(proxyType);
+        }
+
+        function updateProxyStatus(proxyType) {
+            const statusElement = document.getElementById("proxyStatus");
+            statusElement.textContent = `Current Proxy: ${proxyType.toUpperCase()}`;
+            statusElement.className = `proxy-status status-${proxyType}`;
+        }
+
+        function saveSettings() {
+            const proxyType = document.getElementById("proxyType").value;
+            const transportType = document.getElementById("transportType").value;
+            const searchEngine = document.getElementById("searchEngine").value;
+            const cloakType = document.getElementById("cloakType").value;
+            const customTitle = document.getElementById("customTitle").value;
+            const customFavicon = document.getElementById("customFavicon").value;
+
+            localStorage.setItem("proxy", proxyType);
+            localStorage.setItem("transport", transportType);
+            localStorage.setItem("engine", searchEngine);
+            localStorage.setItem("cloak", cloakType);
+            localStorage.setItem("customTitle", customTitle);
+            localStorage.setItem("customFavicon", customFavicon);
+
+            updateProxyStatus(proxyType);
+            updateCloakSettings(cloakType);
+            
+            const saveButton = document.querySelector(".save-button");
+            const originalText = saveButton.textContent;
+            saveButton.textContent = "✓ Settings Saved!";
+            saveButton.style.background = "rgba(0, 255, 0, 0.3)";
+            
+            setTimeout(() => {
+                saveButton.innerHTML = '<i class="fas fa-save"></i> Save Settings';
+                saveButton.style.background = "rgba(0, 255, 0, 0.2)";
+            }, 2000);
+        }
+
+        function updateCloakSettings(cloakType) {
+            if (cloakType === "none") {
+                localStorage.removeItem("cloak");
+                return;
+            }
+            fetch('./cloak.json')
+                .then(response => response.json())
+                .then(data => {
+                    if (data[cloakType]) {
+                        localStorage.setItem("cloak", cloakType);
+                    }
+                })
+                .catch(error => console.error('Error loading cloak settings:', error));
+        }
+
+        document.addEventListener("DOMContentLoaded", loadSettings);
+
+        document.getElementById("proxyType").addEventListener("change", function(e) {
+            updateProxyStatus(e.target.value);
+        });
+
+        document.getElementById("cloakType").addEventListener("change", function(e) {
+            updateCloakSettings(e.target.value);
+        });
+    </script>
+</body>
+</html> 
