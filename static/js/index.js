@@ -179,3 +179,18 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+// Clean search functionality
+document.getElementById('searchApps')?.addEventListener('input', function(e) {
+    const searchTerm = e.target.value.toLowerCase();
+    const apps = document.querySelectorAll('.app-button');
+    
+    apps.forEach(app => {
+        const text = app.textContent.toLowerCase();
+        if (text.includes(searchTerm)) {
+            app.classList.remove('hidden');
+        } else {
+            app.classList.add('hidden');
+        }
+    });
+});
+

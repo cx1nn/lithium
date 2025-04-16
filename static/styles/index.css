@@ -1,16 +1,24 @@
-/* lithium.css - Enhanced Ambience */
+/* Main CSS with modern design and effects */
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
 
 :root {
-    --bg-gradient: linear-gradient(135deg, #141e30, #243b55);
-    --text-color: #e0e7ff;
-    --accent-color: #6a82fb;
+    --bg-gradient: linear-gradient(135deg, #0f1729 0%, #2c1f4a 100%);
+    --text-color: #e6e6ff;
+    --accent-color: #8585cc;
     --input-bg: rgba(255, 255, 255, 0.1);
     --input-border: rgba(255, 255, 255, 0.2);
-    --input-hover-bg: rgba(255, 255, 255, 0.2);
+    --input-hover-bg: rgba(255, 255, 255, 0.15);
     --transition-speed: 0.3s;
     --hover-scale: 1.05;
-    --glow-color: rgba(106, 130, 251, 0.8);
+    --glow-color: rgba(133, 133, 204, 0.8);
+    --category-title-gradient: linear-gradient(45deg, #8585cc, #2c1f4a);
+    --category-bg: rgba(255, 255, 255, 0.1);
+    --app-bg: rgba(255, 255, 255, 0.1);
+    --app-border: rgba(255, 255, 255, 0.2);
+    --app-hover-bg: rgba(255, 255, 255, 0.15);
+    --app-hover-border: rgba(255, 255, 255, 0.2);
+    --app-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    --app-hover-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
 }
 
 * {
@@ -61,311 +69,41 @@ body::after {
 }
 
 @keyframes pulse {
-    0% {
-        transform: scale(1);
-        opacity: 0.5;
-    }
-    50% {
-        transform: scale(1.1);
-        opacity: 0.8;
-    }
-    100% {
-        transform: scale(1);
-        opacity: 0.5;
-    }
+    0% { transform: scale(1); opacity: 0.5; }
+    50% { transform: scale(1.1); opacity: 0.8; }
+    100% { transform: scale(1); opacity: 0.5; }
 }
 
 @keyframes gridMove {
-    0% {
-        background-position: 0 0;
-    }
-    100% {
-        background-position: 60px 60px;
-    }
+    0% { background-position: 0 0; }
+    100% { background-position: 60px 60px; }
 }
 
-/* Enhanced Particle Container */
-#particles-js {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-    opacity: 0.8;
-    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    background: 
-        radial-gradient(circle at center, rgba(106, 130, 251, 0.1) 0%, transparent 70%);
-}
-
-#particles-js:hover {
-    opacity: 1;
-    transform: scale(1.02);
-}
-
-/* Glowing Border Effect */
-.glow-border {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-    box-shadow: 
-        inset 0 0 50px rgba(106, 130, 251, 0.3),
-        inset 0 0 100px rgba(106, 130, 251, 0.2);
-    animation: borderPulse 8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-@keyframes borderPulse {
-    0% {
-        box-shadow: 
-            inset 0 0 50px rgba(106, 130, 251, 0.3),
-            inset 0 0 100px rgba(106, 130, 251, 0.2);
-    }
-    50% {
-        box-shadow: 
-            inset 0 0 70px rgba(106, 130, 251, 0.4),
-            inset 0 0 140px rgba(106, 130, 251, 0.3),
-            inset 0 0 200px rgba(106, 130, 251, 0.2);
-    }
-    100% {
-        box-shadow: 
-            inset 0 0 50px rgba(106, 130, 251, 0.3),
-            inset 0 0 100px rgba(106, 130, 251, 0.2);
-    }
-}
-
-/* Easter Egg: Secret Message */
-.secret-message {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(0);
-    opacity: 0;
-    color: var(--accent-color);
-    font-size: 2rem;
-    text-shadow: 0 0 20px var(--glow-color);
-    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1) 2s;
-    pointer-events: none;
-}
-
-body:active .secret-message {
-    transform: translate(-50%, -50%) scale(1);
-    opacity: 1;
-}
-
-/* Easter Egg: Rainbow Mode */
-.rainbow-mode {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(45deg, 
-        rgba(255,0,0,0.1),
-        rgba(255,165,0,0.1),
-        rgba(255,255,0,0.1),
-        rgba(0,255,0,0.1),
-        rgba(0,0,255,0.1),
-        rgba(75,0,130,0.1),
-        rgba(238,130,238,0.1)
-    );
-    opacity: 0;
-    transition: opacity 0.5s ease 1.5s;
-    pointer-events: none;
-    z-index: -1;
-}
-
-body:active .rainbow-mode {
-    opacity: 1;
-    animation: rainbowShift 10s linear infinite;
-}
-
-@keyframes rainbowShift {
-    0% {
-        background-position: 0% 50%;
-    }
-    100% {
-        background-position: 100% 50%;
-    }
-}
-
-/* Easter Egg: Matrix Rain */
-.matrix-rain {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(transparent 90%, rgba(0,255,0,0.1));
-    opacity: 0;
-    transition: opacity 0.5s ease 1s;
-    pointer-events: none;
-    z-index: -1;
-}
-
-body:active .matrix-rain {
-    opacity: 0.3;
-    animation: matrixFall 1s linear infinite;
-}
-
-@keyframes matrixFall {
-    0% {
-        background-position: 0 0;
-    }
-    100% {
-        background-position: 0 100%;
-    }
-}
-
-/* Easter Egg: Hidden Stars */
-.hidden-stars {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: 
-        radial-gradient(circle at 30% 30%, rgba(255,255,255,0.8) 0%, transparent 2%),
-        radial-gradient(circle at 70% 70%, rgba(255,255,255,0.8) 0%, transparent 2%),
-        radial-gradient(circle at 20% 80%, rgba(255,255,255,0.8) 0%, transparent 2%);
-    opacity: 0;
-    transition: opacity 0.5s ease 0.5s;
-    pointer-events: none;
-    z-index: -1;
-}
-
-body:active .hidden-stars {
-    opacity: 0.5;
-    animation: twinkle 2s ease-in-out infinite;
-}
-
-@keyframes twinkle {
-    0%, 100% {
-        opacity: 0.5;
-    }
-    50% {
-        opacity: 0.8;
-    }
-}
-
-/* Enhanced Floating Elements */
-.floating {
-    position: fixed;
-    width: 100px;
-    height: 100px;
-    background: rgba(106, 130, 251, 0.1);
-    border-radius: 50%;
-    filter: blur(20px);
-    z-index: -1;
-    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1) 2.5s;
-}
-
-body:active .floating {
-    filter: blur(10px) brightness(1.5);
-    transform: scale(1.2);
-}
-
-.floating:nth-child(1) {
-    top: 20%;
-    left: 20%;
-    animation: float1 15s ease-in-out infinite;
-}
-
-.floating:nth-child(2) {
-    top: 60%;
-    left: 80%;
-    animation: float2 20s ease-in-out infinite;
-}
-
-.floating:nth-child(3) {
-    top: 80%;
-    left: 40%;
-    animation: float3 18s ease-in-out infinite;
-}
-
-@keyframes float1 {
-    0% {
-        transform: translate(0, 0) rotate(0deg);
-    }
-    50% {
-        transform: translate(50px, -50px) rotate(180deg);
-    }
-    100% {
-        transform: translate(0, 0) rotate(360deg);
-    }
-}
-
-@keyframes float2 {
-    0% {
-        transform: translate(0, 0) rotate(0deg);
-    }
-    50% {
-        transform: translate(-50px, 50px) rotate(-180deg);
-    }
-    100% {
-        transform: translate(0, 0) rotate(-360deg);
-    }
-}
-
-@keyframes float3 {
-    0% {
-        transform: translate(0, 0) rotate(0deg);
-    }
-    50% {
-        transform: translate(30px, -30px) rotate(90deg);
-    }
-    100% {
-        transform: translate(0, 0) rotate(0deg);
-    }
-}
-
-/* Enhanced Scrollbar */
-::-webkit-scrollbar {
-    width: 12px;
-    transition: width 0.3s ease;
-}
-
-::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb {
-    background: var(--accent-color);
-    border-radius: 10px;
-    transition: all 0.3s ease;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: #506fe3;
-    transform: scale(1.1);
-}
-
-/* Rest of your existing styles... */
-
+/* Navigation */
 nav {
-    position: absolute;
-    top: 20px;
+    position: fixed;
+    top: 30px;
     width: 100%;
     display: flex;
     justify-content: center;
-    z-index: 3;
+    z-index: 1000;
 }
 
 .nav-links {
     list-style: none;
     display: flex;
     gap: 40px;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 10px 30px;
+    border-radius: 30px;
+    backdrop-filter: blur(10px);
 }
 
 .nav-links li a {
     text-decoration: none;
     color: var(--text-color);
     font-weight: 400;
-    transition: all var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all var(--transition-speed) ease;
     position: relative;
     padding: 5px 0;
 }
@@ -373,12 +111,12 @@ nav {
 .nav-links li a::after {
     content: '';
     position: absolute;
-    bottom: 0;
+    bottom: -2px;
     left: 0;
     width: 0;
     height: 2px;
-    background-color: var(--accent-color);
-    transition: width var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+    background: linear-gradient(90deg, transparent, var(--accent-color), transparent);
+    transition: width var(--transition-speed) ease;
 }
 
 .nav-links li a:hover::after {
@@ -386,10 +124,11 @@ nav {
 }
 
 .nav-links li a:hover {
-    color: var(--accent-color);
-    transform: translateY(-2px);
+    color: #fff;
+    text-shadow: 0 0 10px var(--accent-color);
 }
 
+/* Main Content */
 .inputstuff {
     position: absolute;
     top: 50%;
@@ -397,34 +136,113 @@ nav {
     transform: translate(-50%, -50%);
     text-align: center;
     width: 100%;
+    z-index: 1;
 }
 
 #veil {
     font-size: 4rem;
-    font-weight: 500;
+    font-weight: 700;
     margin-bottom: 30px;
-    text-shadow: 0 0 20px rgba(106, 130, 251, 0.8);
-    animation: glow 3s ease-in-out infinite;
+    background: linear-gradient(45deg, #fff, #8585cc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 30px rgba(133, 133, 204, 0.3);
+    animation: titleGlow 3s ease-in-out infinite;
+}
+
+@keyframes titleGlow {
+    0%, 100% { filter: brightness(1) blur(0); }
+    50% { filter: brightness(1.2) blur(1px); }
 }
 
 #form input {
     padding: 15px 25px;
     border-radius: 50px;
-    border: 1px solid var(--input-border);
-    background-color: var(--input-bg);
+    border: 2px solid rgba(133, 133, 204, 0.3);
+    background: rgba(15, 23, 41, 0.6);
     color: var(--text-color);
     outline: none;
     width: 300px;
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     font-size: 1rem;
-    transform-origin: center;
+    backdrop-filter: blur(10px);
 }
 
 #form input:focus, #form input:hover {
-    background-color: var(--input-hover-bg);
-    box-shadow: 0 0 20px rgba(106, 130, 251, 0.6);
-    width: 900px;
-    transform: scale(1.02);
+    width: 400px;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 30px rgba(133, 133, 204, 0.3);
+    background: rgba(15, 23, 41, 0.8);
+}
+
+/* Floating Elements */
+.floating {
+    position: fixed;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.floating:nth-child(1) {
+    top: 20%;
+    left: 20%;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle at center, rgba(133, 133, 204, 0.2), transparent 70%);
+    animation: float1 20s ease-in-out infinite;
+}
+
+.floating:nth-child(2) {
+    bottom: 20%;
+    right: 20%;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle at center, rgba(106, 130, 251, 0.2), transparent 70%);
+    animation: float2 15s ease-in-out infinite;
+}
+
+@keyframes float1 {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    50% { transform: translate(30px, -30px) rotate(180deg); }
+}
+
+@keyframes float2 {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    50% { transform: translate(-20px, 20px) rotate(-180deg); }
+}
+
+/* Time Bar */
+.time-bar {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.4);
+    color: var(--text-color);
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-size: 1rem;
+    font-family: monospace;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(133, 133, 204, 0.3);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--accent-color);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #6b6baa;
 }
 
 /* Additional Decorative Styles */
@@ -629,104 +447,121 @@ a, input {
     }
 }
 
+/* Apps Section - Updated for centered layout */
 .apps-container {
-    max-width: 800px;
-    margin: 100px auto 30px;
+    max-width: 1200px;
+    margin: 0 auto;
     padding: 20px;
-    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    padding-top: 300px;
+}
+
+/* Updated grid layout */
+.apps-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 40px;
+    padding: 20px;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    justify-items: center;
+}
+
+/* App button styling */
+.app-button {
+    width: 160px;
+    height: 160px;
+    padding: 20px;
+    border: 2px solid rgba(133, 133, 204, 0.3);
+    border-radius: 15px;
+    background: rgba(15, 23, 41, 0.8);
+    backdrop-filter: blur(10px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    transition: all 0.3s ease;
+    cursor: pointer;
     position: relative;
     z-index: 1;
 }
 
-.apps-container h1 {
-    color: #fff;
-    margin-bottom: 40px;
-    font-size: 3rem;
-    text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
-    animation: glow 3s ease-in-out infinite;
-}
-
-.apps-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 25px;
-    padding: 20px;
-    max-width: 1000px;
-    margin: 0 auto;
-}
-
-.app-button {
-    background: rgba(0, 0, 0, 0.5);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
-    padding: 15px;
-    cursor: pointer;
+.app-button::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 15px;
+    pointer-events: none;
     transition: all 0.3s ease;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
+    z-index: -1;
 }
 
 .app-button:hover {
     transform: translateY(-5px);
-    background: rgba(255, 255, 255, 0.1);
-    border-color: rgba(255, 255, 255, 0.3);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    border-color: var(--accent-color);
+    box-shadow: 0 0 30px rgba(133, 133, 204, 0.4);
+    background: rgba(25, 33, 51, 0.9);
 }
 
 .app-button img {
-    width: 48px;
-    height: 48px;
-    border-radius: 8px;
+    width: 70px;
+    height: 70px;
+    border-radius: 12px;
+    transition: transform 0.3s ease;
+    pointer-events: none;
 }
 
 .app-button span {
-    color: #fff;
-    font-size: 14px;
-    text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
-}
-
-.search-container {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-}
-
-.search-container form {
-    display: flex;
-    gap: 10px;
-}
-
-.search-container input {
-    flex: 1;
-    padding: 12px 20px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 25px;
-    background: rgba(0, 0, 0, 0.5);
-    color: #fff;
+    color: var(--text-color);
     font-size: 16px;
-    transition: all 0.3s ease;
+    text-align: center;
+    margin-top: 10px;
+    pointer-events: none;
 }
 
-.search-container input:focus {
+/* Search styling update */
+.search-container {
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto 100px;
+    padding: 0 20px;
+    position: relative;
+    z-index: 2;
+}
+
+#searchApps {
+    width: 100%;
+    padding: 18px 30px;
+    border: 2px solid rgba(133, 133, 204, 0.3);
+    border-radius: 30px;
+    background: rgba(15, 23, 41, 0.8);
+    color: var(--text-color);
+    font-size: 18px;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+#searchApps:focus {
     outline: none;
-    border-color: rgba(255, 255, 255, 0.3);
-    box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+    border-color: var(--accent-color);
+    box-shadow: 0 0 30px rgba(133, 133, 204, 0.3);
+    background: rgba(15, 23, 41, 0.8);
 }
 
-.search-container button {
-    padding: 12px 25px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 25px;
-    background: rgba(0, 0, 0, 0.5);
-    color: #fff;
-    cursor: pointer;
-    transition: all 0.3s ease;
+#searchApps::placeholder {
+    color: rgba(255, 255, 255, 0.5);
 }
 
-.search-container button:hover {
-    background: rgba(255, 255, 255, 0.1);
-    border-color: rgba(255, 255, 255, 0.3);
+/* Hide apps that don't match search */
+.app-button.hidden {
+    display: none;
 }
   

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lithium Settings</title>
     <link rel="stylesheet" href="./styles/index.css">
+    <link id="theme-css" rel="stylesheet" href="./styles/theme-default.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         .settings-container {
@@ -197,6 +198,22 @@
             border-color: rgba(255, 255, 255, 0.5);
             box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
         }
+
+        .time-bar {
+            position: fixed;
+            bottom: 1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 1.2rem;
+            font-family: monospace;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
     </style>
 </head>
 <body>
@@ -209,6 +226,8 @@
     <div class="ambience-particle"></div>
     <div class="ambience-particle"></div>
     <div class="ambience-particle"></div>
+
+    <div class="time-bar" id="timeBar"></div>
 
     <button class="back-button" onclick="window.location.href='/'">
         <i class="fas fa-arrow-left"></i> Back
@@ -288,6 +307,39 @@
             </div>
         </div>
 
+        <div class="settings-section">
+            <h2><i class="fas fa-palette settings-icon"></i>Theme Settings</h2>
+            <div class="setting-item">
+                <span class="setting-label">Color Theme</span>
+                <div class="setting-control">
+                    <select id="themeSelect">
+                        <option value="default">Default</option>
+                        <option value="purple">Purple</option>
+                        <option value="blue">Blue</option>
+                        <option value="red">Red</option>
+                        <option value="light">Light</option>
+                        <option value="neon">Neon</option>
+                        <option value="dark">Dark</option>
+                        <option value="sunset">Sunset</option>
+                        <option value="ocean">Ocean</option>
+                        <option value="midnight">Midnight</option>
+                       
+                        
+
+
+                    </select>
+                </div>
+            </div>
+            <div class="theme-preview" id="themePreview" style="
+                height: 60px;
+                border-radius: 8px;
+                margin-top: 15px;
+                background: linear-gradient(45deg, var(--primary), var(--accent));
+                transition: all 0.3s ease;
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            "></div>
+        </div>
+
         <button class="save-button" onclick="saveSettings()">
             <i class="fas fa-save"></i> Save Settings
         </button>
@@ -295,6 +347,30 @@
 
     <script src="./js/particles.js"></script>
     <script>
+        // Theme settings
+        const themes = {
+            default: {
+                primary: '#00ff00',
+                primaryDark: '#00cc00',
+                accent: '#00ff88'
+            },
+            purple: {
+                primary: '#A020F0',
+                primaryDark: '#8A2BE2',
+                accent: '#E066FF'
+            },
+            blue: {
+                primary: '#00a8ff',
+                primaryDark: '#0097e6',
+                accent: '#00d2d3'
+            },
+            red: {
+                primary: '#ff4757',
+                primaryDark: '#ff6b81',
+                accent: '#ffa502'
+            }
+        };
+
         function loadSettings() {
             const proxyType = localStorage.getItem("proxy") || "uv";
             const transportType = localStorage.getItem("transport") || "epoxy";
@@ -302,6 +378,7 @@
             const cloakType = localStorage.getItem("cloak") || "none";
             const customTitle = localStorage.getItem("customTitle") || "";
             const customFavicon = localStorage.getItem("customFavicon") || "";
+            const themeName = localStorage.getItem("selectedTheme") || "default";
 
             document.getElementById("proxyType").value = proxyType;
             document.getElementById("transportType").value = transportType;
@@ -309,8 +386,10 @@
             document.getElementById("cloakType").value = cloakType;
             document.getElementById("customTitle").value = customTitle;
             document.getElementById("customFavicon").value = customFavicon;
+            document.getElementById("themeSelect").value = themeName;
 
             updateProxyStatus(proxyType);
+            applyTheme(themeName);
         }
 
         function updateProxyStatus(proxyType) {
@@ -319,6 +398,9 @@
             statusElement.className = `proxy-status status-${proxyType}`;
         }
 
+        
+            
+
         function saveSettings() {
             const proxyType = document.getElementById("proxyType").value;
             const transportType = document.getElementById("transportType").value;
@@ -326,6 +408,7 @@
             const cloakType = document.getElementById("cloakType").value;
             const customTitle = document.getElementById("customTitle").value;
             const customFavicon = document.getElementById("customFavicon").value;
+            const themeName = document.getElementById("themeSelect").value;
 
             localStorage.setItem("proxy", proxyType);
             localStorage.setItem("transport", transportType);
@@ -333,9 +416,11 @@
             localStorage.setItem("cloak", cloakType);
             localStorage.setItem("customTitle", customTitle);
             localStorage.setItem("customFavicon", customFavicon);
+            localStorage.setItem("selectedTheme", themeName);
 
             updateProxyStatus(proxyType);
             updateCloakSettings(cloakType);
+            applyTheme(themeName);
             
             const saveButton = document.querySelector(".save-button");
             const originalText = saveButton.textContent;
@@ -371,6 +456,67 @@
 
         document.getElementById("cloakType").addEventListener("change", function(e) {
             updateCloakSettings(e.target.value);
+        });
+
+        document.getElementById("themeSelect").addEventListener("change", function(e) {
+            applyTheme(e.target.value);
+        });
+
+        // Time Bar
+        function updateTimeBar() {
+            const now = new Date();
+            let hours = now.getHours();
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const seconds = now.getSeconds().toString().padStart(2, '0');
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12;
+            hours = hours ? hours : 12;
+            hours = hours.toString().padStart(2, '0');
+            document.getElementById('timeBar').textContent = `${hours}:${minutes}:${seconds} ${ampm}`;
+        }
+
+        setInterval(updateTimeBar, 1000);
+        updateTimeBar();
+
+        // Apply settings and theme on load
+        window.onload = function() {
+            console.log('🚀 Initializing theme system in settings...');
+            const savedTheme = localStorage.getItem("selectedTheme");
+            console.log('💾 Retrieved saved theme from localStorage:', savedTheme);
+            if (savedTheme) {
+                applyTheme(savedTheme);
+                // Update the theme selector to show current theme
+                document.getElementById('themeSelect').value = savedTheme;
+            }
+        };
+
+        function applyTheme(theme) {
+            console.log('🎨 Attempting to load theme:', theme);
+            fetch('./themes.json')
+                .then(response => response.json())
+                .then(data => {
+                    var linkElement = document.querySelector("link[rel='stylesheet']");
+                    if (data[theme]) {
+                        console.log('✅ Found theme in themes.json:', theme);
+                        console.log('📁 Loading CSS file:', data[theme]);
+                        linkElement.href = data[theme];
+                        console.log('✨ Theme applied successfully');
+                    } else {
+                        console.warn('⚠️ Theme not found:', theme);
+                        console.log('🔄 Falling back to default theme');
+                        linkElement.href = data["default"];
+                    }
+                })
+                .catch(error => {
+                    console.error('❌ Error loading themes.json:', error);
+                });
+        }
+
+        // Update theme when selection changes
+        document.getElementById('themeSelect').addEventListener('change', function() {
+            const selectedTheme = this.value;
+            localStorage.setItem("selectedTheme", selectedTheme);
+            applyTheme(selectedTheme);
         });
     </script>
 </body>
