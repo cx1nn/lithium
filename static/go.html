@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -13,7 +14,7 @@
     <script src="/scram/scramjet.controller.js"></script>
 
     <link rel="shortcut icon" id="tab-favicon" href="https://ssl.gstatic.com/images/branding/product/1x/drive_2020q4_32dp.png" />
-    <title id="tab-title">Home- Google Drive</title>
+    <title id="tab-title">Home - Google Drive</title>
     <script src="https://kit.fontawesome.com/1237c86ba0.js" crossorigin="anonymous"></script>
     <style>
       body {
@@ -72,20 +73,52 @@
   <body>
     <script>
       window.addEventListener('resize', navigator.keyboard.lock(['Escape']));
-      
-      // Get URL from query parameter
-      const urlParams = new URLSearchParams(window.location.search);
-      const targetUrl = urlParams.get('url');
-      
-      if (targetUrl) {
-        document.getElementById('frame').src = targetUrl;
+
+      async function init() {
+        try {
+          const connection = new BareMux.BareMuxConnection("/baremux/worker.js");
+          const wispUrl = (location.protocol === "https:" ? "wss" : "ws") + "://" + location.host + "/wisp/";
+          if (localStorage.getItem("transport") == "epoxy") {
+            if (await connection.getTransport() !== "/epoxy/index.mjs") {
+              await connection.setTransport("/epoxy/index.mjs", [{ wisp: wispUrl }]);
+              console.log("Using websocket transport. Wisp URL is: " + wispUrl);
+            }
+          } else {
+            if (await connection.getTransport() !== "/libcurl/index.mjs") {
+              await connection.setTransport("/libcurl/index.mjs", [{ wisp: wispUrl }]);
+              console.log("Using websocket transport. Wisp URL is: " + wispUrl);
+            }
+          }
+        } catch (err) {
+          console.error("An error occurred while setting up baremux:", err);
+        }
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const queryUrl = urlParams.get("url");
+
+        if (queryUrl) {
+          document.getElementById("frame").src = queryUrl;
+          return;
+        }
+
+        const url = localStorage.getItem("url");
+        if (url) {
+          localStorage.removeItem("url");
+          if (url.includes("/scram/service/") || url.includes(__uv$config.prefix)) {
+            document.getElementById("frame").src = url;
+          } else {
+            window.location.href = "/go.html?url=" + encodeURIComponent(url);
+          }
+        }
       }
+
+      init();
     </script>
+
     <iframe
       src=""
       id="frame"
-      style="bottom: 0"
-      style="border: 0px #ffffff none"
+      style="bottom: 0; border: 0px #ffffff none"
       name="Iframe"
       scrolling="yes"
       frameborder="0"
@@ -107,9 +140,10 @@
     <button id="eruda-button" class="navbtn navbtn4" onclick="erudaToggle()">
       <i class="fas fa-code"></i>
     </button>
+
     <script>
       function reload() {
-        document.getElementById('frame').src = document.getElementById('frame').src;
+        document.getElementById("frame").src = document.getElementById("frame").src;
       }
 
       function toggleFullscreen() {
@@ -119,45 +153,7 @@
           document.exitFullscreen();
         }
       }
-
-       
-        async function init() {
-            try {
-                const connection = new BareMux.BareMuxConnection("/baremux/worker.js");
-                const wispUrl = (location.protocol === "https:" ? "wss" : "ws") + "://" + location.host + "/wisp/";
-                if (localStorage.getItem("transport") == "epoxy") {
-                    if (await connection.getTransport() !== "/epoxy/index.mjs") {
-                        await connection.setTransport("/epoxy/index.mjs", [{ wisp: wispUrl }]);
-                        console.log("Using websocket transport. Wisp URL is: " + wispUrl);
-                    }
-                }
-                else {
-                    if (await connection.getTransport() !== "/libcurl/index.mjs") {
-                        await connection.setTransport("/libcurl/index.mjs", [{ wisp: wispUrl }]);
-                        console.log("Using websocket transport. Wisp URL is: " + wispUrl);
-                    }
-                }
-            } catch (err) {
-                console.error("An error occurred while setting up baremux:", err);
-            }
-
-            const url = localStorage.getItem("url");
-            if (url) {
-                if (url.includes("/scram/service/") || url.includes(__uv$config.prefix)) {
-                    document.getElementById("frame").src = url;
-                } else {
-                    window.location.href = "/go.html?url=" + encodeURIComponent(url);
-                }
-            }
-        }
-
-        init().then(() => {
-        });
-      
     </script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-WKJQ5QHQTJ"></script>
-    <script>
-     
-    </script>
   </body>
 </html>

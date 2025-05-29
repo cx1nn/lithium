@@ -215,17 +215,19 @@
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
         }
     </style>
+       <link rel="stylesheet" href="./styles/cursor.css">
 </head>
 <body>
     <div class="floating"></div>
     <div class="glow-border"></div>
-    <div class="secret-message">you found the skibidi toilet rizzler secret!!!!!!!</div>
     <div class="rainbow-mode"></div>
     <div class="matrix-rain"></div>
     <div class="hidden-stars"></div>
     <div class="ambience-particle"></div>
     <div class="ambience-particle"></div>
     <div class="ambience-particle"></div>
+    <script src="./js/cursor.js"></script>
+    <script src="./js/cursor-settings.js"></script>
 
     <div class="time-bar" id="timeBar"></div>
 
@@ -242,12 +244,33 @@
                 <span class="setting-label">Proxy Type</span>
                 <div class="setting-control">
                     <select id="proxyType">
-                        <option value="uv" id="uvOption">Ultraviolet (UV)</option>
-                        <option value="sj" id="sjOption">Scramjet (SJ)</option>
+                        <option value="uv">Ultraviolet (UV)</option>
+                        <option value="sj">Scramjet (SJ)</option>
                     </select>
                 </div>
             </div>
             <div class="proxy-status" id="proxyStatus"></div>
+        </div>
+
+        <div class="settings-section">
+            <h2><i class="fas fa-mouse-pointer settings-icon"></i>Cursor Settings</h2>
+            <div class="setting-item">
+                <span class="setting-label">Cursor Style</span>
+                <div class="setting-control">
+                    <select id="cursorStyle" class="setting-input">
+                        <option value="style-1">Circle</option>
+                        <option value="style-2">Diamond</option>
+                        <option value="style-3">Diamond Fill</option>
+                        <option value="style-4">Square</option>
+                    </select>
+                </div>
+            </div>
+            <div class="setting-item">
+                <span class="setting-label">Preview</span>
+                <div class="setting-control">
+                    <div class="cursor-preview" style="width: 300px; height: 200px;"></div>
+                </div>
+            </div>
         </div>
 
         <div class="settings-section">
@@ -323,10 +346,6 @@
                         <option value="sunset">Sunset</option>
                         <option value="ocean">Ocean</option>
                         <option value="midnight">Midnight</option>
-                       
-                        
-
-
                     </select>
                 </div>
             </div>
@@ -345,7 +364,6 @@
         </button>
     </div>
 
-    <script src="./js/particles.js"></script>
     <script>
         // Theme settings
         const themes = {
@@ -397,9 +415,6 @@
             statusElement.textContent = `Current Proxy: ${proxyType.toUpperCase()}`;
             statusElement.className = `proxy-status status-${proxyType}`;
         }
-
-        
-            
 
         function saveSettings() {
             const proxyType = document.getElementById("proxyType").value;
@@ -517,6 +532,34 @@
             const selectedTheme = this.value;
             localStorage.setItem("selectedTheme", selectedTheme);
             applyTheme(selectedTheme);
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Load saved settings
+            const savedProxy = localStorage.getItem('proxy') || 'uv';
+            const savedEngine = localStorage.getItem('engine') || 'google';
+
+            // Set initial selections
+            document.querySelector(`[data-proxy="${savedProxy}"]`).classList.add('selected');
+            document.querySelector(`[data-engine="${savedEngine}"]`).classList.add('selected');
+
+            // Proxy selection
+            document.querySelectorAll('.proxy-option').forEach(option => {
+                option.addEventListener('click', () => {
+                    document.querySelectorAll('.proxy-option').forEach(opt => opt.classList.remove('selected'));
+                    option.classList.add('selected');
+                    localStorage.setItem('proxy', option.dataset.proxy);
+                });
+            });
+
+            // Search engine selection
+            document.querySelectorAll('.search-engine-option').forEach(option => {
+                option.addEventListener('click', () => {
+                    document.querySelectorAll('.search-engine-option').forEach(opt => opt.classList.remove('selected'));
+                    option.classList.add('selected');
+                    localStorage.setItem('engine', option.dataset.engine);
+                });
+            });
         });
     </script>
 </body>
