@@ -33,3 +33,6 @@ async function handleRequest(event) {
 self.addEventListener("fetch", (event) => {
     event.respondWith(handleRequest(event));
 });
+
+
+// some epic gaming
