@@ -5,217 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lithium Settings</title>
     <link rel="stylesheet" href="./styles/index.css">
-    <link id="theme-css" rel="stylesheet" href="./styles/theme-default.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <style>
-        .settings-container {
-            max-width: 800px;
-            margin: 50px auto;
-            padding: 20px;
-            --bg-gradient: linear-gradient(135deg, #141e30, #243b55);
-            border-radius: 10px;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-            position: relative;
-            z-index: 1;
-        }
-
-        .settings-section {
-            margin-bottom: 30px;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s ease;
-        }
-
-        .settings-section:hover {
-            background: rgba(255, 255, 255, 0.15);
-            border-color: rgba(255, 255, 255, 0.2);
-            transform: translateY(-2px);
-        }
-
-        .settings-title {
-            color: #fff;
-            font-size: 24px;
-            margin-bottom: 20px;
-            text-align: center;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-        }
-
-        .setting-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 15px;
-            padding: 10px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 5px;
-            transition: all 0.3s ease;
-        }
-
-        .setting-item:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .setting-label {
-            color: #fff;
-            font-size: 16px;
-            text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
-        }
-
-        .setting-control {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        select, button {
-            padding: 8px 15px;
-            border-radius: 5px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            background: rgba(0, 0, 0, 0.5);
-            color: #fff;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            appearance: none;
-            background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23FFFFFF%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.4-12.8z%22%2F%3E%3C%2Fsvg%3E");
-            background-repeat: no-repeat;
-            background-position: right 0.7em top 50%;
-            background-size: 0.65em auto;
-            padding-right: 30px;
-        }
-
-        select option {
-            background: rgba(0, 0, 0, 0.9);
-            color: #fff;
-            padding: 8px 15px;
-        }
-
-        select::-ms-expand {
-            display: none;
-        }
-
-        select:hover, button:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 255, 255, 0.3);
-            transform: translateY(-1px);
-        }
-
-        .proxy-status {
-            padding: 10px;
-            margin-top: 10px;
-            border-radius: 5px;
-            text-align: center;
-            font-weight: bold;
-            text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
-        }
-
-        .status-uv {
-            background: rgba(0, 255, 0, 0.2);
-            color: #00ff00;
-            border: 1px solid rgba(0, 255, 0, 0.3);
-        }
-
-        .status-sj {
-            background: rgba(0, 0, 255, 0.2);
-            color: #00ffff;
-            border: 1px solid rgba(0, 0, 255, 0.3);
-        }
-
-        .back-button {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            padding: 10px 20px;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 5px;
-            color: #fff;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            z-index: 2;
-            text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
-        }
-
-        .back-button:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: translateY(-2px);
-        }
-
-        .save-button {
-            display: block;
-            width: 100%;
-            padding: 15px;
-            margin-top: 20px;
-            background: rgba(0, 255, 0, 0.2);
-            border: 1px solid rgba(0, 255, 0, 0.3);
-            border-radius: 5px;
-            color: #00ff00;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
-        }
-
-        .save-button:hover {
-            background: rgba(0, 255, 0, 0.3);
-            transform: translateY(-2px);
-        }
-
-        .settings-icon {
-            margin-right: 10px;
-            color: #fff;
-            text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
-        }
-
-        .setting-input {
-            padding: 8px 15px;
-            border-radius: 5px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            background: rgba(0, 0, 0, 0.5);
-            color: #fff;
-            width: 200px;
-            transition: all 0.3s ease;
-            text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
-        }
-
-        .setting-input::placeholder {
-            color: rgba(255, 255, 255, 0.5);
-        }
-
-        .setting-input:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 255, 255, 0.3);
-        }
-
-        .setting-input:focus {
-            outline: none;
-            border-color: rgba(255, 255, 255, 0.5);
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
-        }
-
-        .time-bar {
-            position: fixed;
-            bottom: 1rem;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0, 0, 0, 0.8);
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-size: 1.2rem;
-            font-family: monospace;
-            z-index: 1000;
-            backdrop-filter: blur(5px);
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-        }
-    </style>
-       <link rel="stylesheet" href="./styles/cursor.css">
+        <link rel="stylesheet" href="./styles/cursor.css">
+        <link rel="stylesheet" href="./styles/settings.css">
 </head>
 <body>
     <div class="floating"></div>
@@ -228,6 +20,7 @@
     <div class="ambience-particle"></div>
     <script src="./js/cursor.js"></script>
     <script src="./js/cursor-settings.js"></script>
+    <script src="./js/custom-theme.js"></script>
 
     <div class="time-bar" id="timeBar"></div>
 
@@ -252,26 +45,7 @@
             <div class="proxy-status" id="proxyStatus"></div>
         </div>
 
-        <div class="settings-section">
-            <h2><i class="fas fa-mouse-pointer settings-icon"></i>Cursor Settings</h2>
-            <div class="setting-item">
-                <span class="setting-label">Cursor Style</span>
-                <div class="setting-control">
-                    <select id="cursorStyle" class="setting-input">
-                        <option value="style-1">Circle</option>
-                        <option value="style-2">Diamond</option>
-                        <option value="style-3">Diamond Fill</option>
-                        <option value="style-4">Square</option>
-                    </select>
-                </div>
-            </div>
-            <div class="setting-item">
-                <span class="setting-label">Preview</span>
-                <div class="setting-control">
-                    <div class="cursor-preview" style="width: 300px; height: 200px;"></div>
-                </div>
-            </div>
-        </div>
+        
 
         <div class="settings-section">
             <h2><i class="fas fa-network-wired settings-icon"></i>Transport Settings</h2>
@@ -346,6 +120,7 @@
                         <option value="sunset">Sunset</option>
                         <option value="ocean">Ocean</option>
                         <option value="midnight">Midnight</option>
+                        <option value="custom">Custom</option>
                     </select>
                 </div>
             </div>
@@ -364,203 +139,32 @@
         </button>
     </div>
 
-    <script>
-        // Theme settings
-        const themes = {
-            default: {
-                primary: '#00ff00',
-                primaryDark: '#00cc00',
-                accent: '#00ff88'
-            },
-            purple: {
-                primary: '#A020F0',
-                primaryDark: '#8A2BE2',
-                accent: '#E066FF'
-            },
-            blue: {
-                primary: '#00a8ff',
-                primaryDark: '#0097e6',
-                accent: '#00d2d3'
-            },
-            red: {
-                primary: '#ff4757',
-                primaryDark: '#ff6b81',
-                accent: '#ffa502'
-            }
-        };
 
-        function loadSettings() {
-            const proxyType = localStorage.getItem("proxy") || "uv";
-            const transportType = localStorage.getItem("transport") || "epoxy";
-            const searchEngine = localStorage.getItem("engine") || "google";
-            const cloakType = localStorage.getItem("cloak") || "none";
-            const customTitle = localStorage.getItem("customTitle") || "";
-            const customFavicon = localStorage.getItem("customFavicon") || "";
-            const themeName = localStorage.getItem("selectedTheme") || "default";
-
-            document.getElementById("proxyType").value = proxyType;
-            document.getElementById("transportType").value = transportType;
-            document.getElementById("searchEngine").value = searchEngine;
-            document.getElementById("cloakType").value = cloakType;
-            document.getElementById("customTitle").value = customTitle;
-            document.getElementById("customFavicon").value = customFavicon;
-            document.getElementById("themeSelect").value = themeName;
-
-            updateProxyStatus(proxyType);
-            applyTheme(themeName);
-        }
-
-        function updateProxyStatus(proxyType) {
-            const statusElement = document.getElementById("proxyStatus");
-            statusElement.textContent = `Current Proxy: ${proxyType.toUpperCase()}`;
-            statusElement.className = `proxy-status status-${proxyType}`;
-        }
-
-        function saveSettings() {
-            const proxyType = document.getElementById("proxyType").value;
-            const transportType = document.getElementById("transportType").value;
-            const searchEngine = document.getElementById("searchEngine").value;
-            const cloakType = document.getElementById("cloakType").value;
-            const customTitle = document.getElementById("customTitle").value;
-            const customFavicon = document.getElementById("customFavicon").value;
-            const themeName = document.getElementById("themeSelect").value;
-
-            localStorage.setItem("proxy", proxyType);
-            localStorage.setItem("transport", transportType);
-            localStorage.setItem("engine", searchEngine);
-            localStorage.setItem("cloak", cloakType);
-            localStorage.setItem("customTitle", customTitle);
-            localStorage.setItem("customFavicon", customFavicon);
-            localStorage.setItem("selectedTheme", themeName);
-
-            updateProxyStatus(proxyType);
-            updateCloakSettings(cloakType);
-            applyTheme(themeName);
-            
-            const saveButton = document.querySelector(".save-button");
-            const originalText = saveButton.textContent;
-            saveButton.textContent = "✓ Settings Saved!";
-            saveButton.style.background = "rgba(0, 255, 0, 0.3)";
-            
-            setTimeout(() => {
-                saveButton.innerHTML = '<i class="fas fa-save"></i> Save Settings';
-                saveButton.style.background = "rgba(0, 255, 0, 0.2)";
-            }, 2000);
-        }
-
-        function updateCloakSettings(cloakType) {
-            if (cloakType === "none") {
-                localStorage.removeItem("cloak");
-                return;
-            }
-            fetch('./cloak.json')
-                .then(response => response.json())
-                .then(data => {
-                    if (data[cloakType]) {
-                        localStorage.setItem("cloak", cloakType);
-                    }
-                })
-                .catch(error => console.error('Error loading cloak settings:', error));
-        }
-
-        document.addEventListener("DOMContentLoaded", loadSettings);
-
-        document.getElementById("proxyType").addEventListener("change", function(e) {
-            updateProxyStatus(e.target.value);
+    <div class="settings-section" style="max-width:800px; margin:20px auto; border-radius:8px; box-shadow: 0 0 15px rgba(0,0,0,0.3); overflow: hidden;">
+        <button id="toggleThemeEditor" style="width: 100%; background:#444; color:#fff; border:none; padding:12px; font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:10px; user-select:none;">
+          <i class="fas fa-palette"></i> Custom Theme Editor <span id="toggleIcon" style="transition: transform 0.3s;">&#9650;</span>
+        </button>
+        <div id="themeEditorContainer" style="height:500px; transition: height 0.3s ease; overflow:hidden;">
+          <iframe src="custom.html" style="width:100%; height:100%; border:none; border-radius: 0 0 8px 8px;"></iframe>
+        </div>
+      </div>
+      
+      <script>
+        const toggleBtn = document.getElementById('toggleThemeEditor');
+        const editorContainer = document.getElementById('themeEditorContainer');
+        const toggleIcon = document.getElementById('toggleIcon');
+      
+        toggleBtn.addEventListener('click', () => {
+          if (editorContainer.style.height === '0px' || editorContainer.style.height === '') {
+            editorContainer.style.height = '500px';
+            toggleIcon.style.transform = 'rotate(0deg)';
+          } else {
+            editorContainer.style.height = '0';
+            toggleIcon.style.transform = 'rotate(180deg)';
+          }
         });
-
-        document.getElementById("cloakType").addEventListener("change", function(e) {
-            updateCloakSettings(e.target.value);
-        });
-
-        document.getElementById("themeSelect").addEventListener("change", function(e) {
-            applyTheme(e.target.value);
-        });
-
-        // Time Bar
-        function updateTimeBar() {
-            const now = new Date();
-            let hours = now.getHours();
-            const minutes = now.getMinutes().toString().padStart(2, '0');
-            const seconds = now.getSeconds().toString().padStart(2, '0');
-            const ampm = hours >= 12 ? 'PM' : 'AM';
-            hours = hours % 12;
-            hours = hours ? hours : 12;
-            hours = hours.toString().padStart(2, '0');
-            document.getElementById('timeBar').textContent = `${hours}:${minutes}:${seconds} ${ampm}`;
-        }
-
-        setInterval(updateTimeBar, 1000);
-        updateTimeBar();
-
-        // Apply settings and theme on load
-        window.onload = function() {
-            console.log('🚀 Initializing theme system in settings...');
-            const savedTheme = localStorage.getItem("selectedTheme");
-            console.log('💾 Retrieved saved theme from localStorage:', savedTheme);
-            if (savedTheme) {
-                applyTheme(savedTheme);
-                // Update the theme selector to show current theme
-                document.getElementById('themeSelect').value = savedTheme;
-            }
-        };
-
-        function applyTheme(theme) {
-            console.log('🎨 Attempting to load theme:', theme);
-            fetch('./themes.json')
-                .then(response => response.json())
-                .then(data => {
-                    var linkElement = document.querySelector("link[rel='stylesheet']");
-                    if (data[theme]) {
-                        console.log('✅ Found theme in themes.json:', theme);
-                        console.log('📁 Loading CSS file:', data[theme]);
-                        linkElement.href = data[theme];
-                        console.log('✨ Theme applied successfully');
-                    } else {
-                        console.warn('⚠️ Theme not found:', theme);
-                        console.log('🔄 Falling back to default theme');
-                        linkElement.href = data["default"];
-                    }
-                })
-                .catch(error => {
-                    console.error('❌ Error loading themes.json:', error);
-                });
-        }
-
-        // Update theme when selection changes
-        document.getElementById('themeSelect').addEventListener('change', function() {
-            const selectedTheme = this.value;
-            localStorage.setItem("selectedTheme", selectedTheme);
-            applyTheme(selectedTheme);
-        });
-
-        document.addEventListener('DOMContentLoaded', () => {
-            // Load saved settings
-            const savedProxy = localStorage.getItem('proxy') || 'uv';
-            const savedEngine = localStorage.getItem('engine') || 'google';
-
-            // Set initial selections
-            document.querySelector(`[data-proxy="${savedProxy}"]`).classList.add('selected');
-            document.querySelector(`[data-engine="${savedEngine}"]`).classList.add('selected');
-
-            // Proxy selection
-            document.querySelectorAll('.proxy-option').forEach(option => {
-                option.addEventListener('click', () => {
-                    document.querySelectorAll('.proxy-option').forEach(opt => opt.classList.remove('selected'));
-                    option.classList.add('selected');
-                    localStorage.setItem('proxy', option.dataset.proxy);
-                });
-            });
-
-            // Search engine selection
-            document.querySelectorAll('.search-engine-option').forEach(option => {
-                option.addEventListener('click', () => {
-                    document.querySelectorAll('.search-engine-option').forEach(opt => opt.classList.remove('selected'));
-                    option.classList.add('selected');
-                    localStorage.setItem('engine', option.dataset.engine);
-                });
-            });
-        });
-    </script>
+      </script>
+        
+        <script src="./js/settings.js"></script>    
 </body>
 </html> 

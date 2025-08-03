@@ -31,7 +31,7 @@
 @media (hover: none) {
     .cursor, .cursor-dot { display: none; }
     * { cursor: auto !important; }
-}
+} 
 
 /* Cursor Styles */
 .cursor-style-1 {

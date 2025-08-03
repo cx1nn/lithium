@@ -18,9 +18,50 @@ function applySettings() {
     }
 }
 
+// --- Custom Theme Support ---
+const customThemeVars = [
+  { css: '--bg-gradient', input: 'custom-bg-gradient' },
+  { css: '--text-color', input: 'custom-text-color' },
+  { css: '--accent-color', input: 'custom-accent-color' },
+  { css: '--input-bg', input: 'custom-input-bg' },
+  { css: '--input-border', input: 'custom-input-border' },
+  { css: '--input-hover-bg', input: 'custom-input-hover-bg' },
+  { css: '--glow-color', input: 'custom-glow-color' },
+  { css: '--category-title-gradient', input: 'custom-category-title-gradient' },
+  { css: '--category-bg', input: 'custom-category-bg' },
+  { css: '--app-bg', input: 'custom-app-bg' },
+  { css: '--app-border', input: 'custom-app-border' },
+  { css: '--app-hover-bg', input: 'custom-app-hover-bg' },
+  { css: '--app-hover-border', input: 'custom-app-hover-border' },
+  { css: '--app-shadow', input: 'custom-app-shadow' },
+  { css: '--app-hover-shadow', input: 'custom-app-hover-shadow' },
+];
+
+function applyCustomTheme(theme) {
+  customThemeVars.forEach(({ css, input }) => {
+    if (theme && theme[input] !== undefined) {
+      document.documentElement.style.setProperty(css, theme[input]);
+    }
+  });
+}
+
+function loadCustomTheme() {
+    const theme = JSON.parse(localStorage.getItem('customTheme') || '{}');
+    console.log('🎨 Loaded custom theme from localStorage:', theme);
+    if (Object.keys(theme).length > 0) {
+      applyCustomTheme(theme);
+    } else {
+      console.warn('⚠️ Custom theme was empty or malformed');
+    }
+  }
+
 function applyTheme(theme) {
+    if (theme === 'custom') {
+        loadCustomTheme();
+        return;
+    }
     console.log('🎨 Attempting to load theme:', theme);
-    fetch('./themes.json')
+    fetch('./json/themes.json')
         .then(response => response.json())
         .then(data => {
             var linkElement = document.querySelector("link[rel='stylesheet']");
